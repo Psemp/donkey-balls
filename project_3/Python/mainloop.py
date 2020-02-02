@@ -137,6 +137,7 @@ ether = pygame.image.load("images/ether.png").convert_alpha()
 needle = pygame.image.load("images/needle.png").convert_alpha()
 cont = pygame.image.load("images/container.png").convert_alpha()
 guardimg = pygame.image.load("images/guard.png").convert_alpha()
+syringe = pygame.image.load("syringe.png").convert_alpha()
 
 while run == True:
     
@@ -187,6 +188,9 @@ while run == True:
     else:
         win.blit(cont, (64,480))
     
+    if SyringeCreated == True:
+        win.blit(syringe, (416,480))
+
     if mac.alive == True:
         win.blit(plyr, (macpos))
 
