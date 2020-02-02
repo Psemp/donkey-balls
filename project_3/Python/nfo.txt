@@ -1,4 +1,0 @@
-Reqs : 
-Sprites & display boudaries
-Use a list to define the Maze
-Acutalization --> Maze
