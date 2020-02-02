@@ -1,0 +1,12 @@
+    #for r in maze:
+    #    for c in r:
+    #        ##print(c,end = "")
+    #        if c == '.':
+    #            win.blit(floor, (mapx,mapy))
+    #        else:
+    #            win.blit(wall, (mapx,mapy))
+    #        if mapx == 480:
+    #            mapx = 0
+    #        else:
+    #           mapx += mapinc 
+    #    mapy += mapinc
