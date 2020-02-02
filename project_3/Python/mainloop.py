@@ -164,6 +164,8 @@ while run == True:
 
     ##DRAW##
 
+    win.fill((255,255,255))
+
     for i in range(0,len(board.floors)):
         win.blit(floor,(board.floors[i]))
 
