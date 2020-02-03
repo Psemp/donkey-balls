@@ -94,6 +94,7 @@ Container = Items()
 Ether = Items ()
 
 SyringeCreated = False
+GameOver = False
 
 maze = open('maze.txt')
 
@@ -130,14 +131,16 @@ pygame.init
 win = pygame.display.set_mode ((480,512))
 
 run = True
-floor = pygame.image.load("images/floor.png").convert()
-wall = pygame.image.load("images/wall.png").convert()
-plyr = pygame.image.load("images/plyr.png").convert_alpha()
-ether = pygame.image.load("images/ether.png").convert_alpha()
-needle = pygame.image.load("images/needle.png").convert_alpha()
-cont = pygame.image.load("images/container.png").convert_alpha()
-guardimg = pygame.image.load("images/guard.png").convert_alpha()
+floor = pygame.image.load("floor.png").convert()
+wall = pygame.image.load("wall.png").convert()
+plyr = pygame.image.load("plyr.png").convert_alpha()
+ether = pygame.image.load("ether.png").convert_alpha()
+needle = pygame.image.load("needle.png").convert_alpha()
+cont = pygame.image.load("container.png").convert_alpha()
+guardimg = pygame.image.load("guard.png").convert_alpha()
 syringe = pygame.image.load("syringe.png").convert_alpha()
+victory = pygame.image.load("victory.png").convert_alpha()
+defeat = pygame.image.load("defeat.png").convert_alpha()
 
 while run == True:
     
@@ -150,9 +153,11 @@ while run == True:
     Tuple_macpos = tuple(macpos)
 
     if mac.alive == True and guard.alive == True and macpos == guardpos and SyringeCreated == False:
-        mac.alive = False 
+        mac.alive = False
+        GameOver = True 
     if mac.alive == True and guard.alive == True and macpos == guardpos and SyringeCreated == True:
         guard.alive = False
+        GameOver = True
     if  mac.alive == True and Needle.gathered == True and Ether.gathered == True and Container.gathered == True:
         SyringeCreated = True
     if mac.alive == True and Needle.gathered == False and Tuple_macpos == Needle.coordinates:
@@ -196,27 +201,42 @@ while run == True:
 
     if guard.alive == True:
         win.blit(guardimg, (guardpos))
+    
+    if GameOver and mac.alive:
+        win.blit(victory, (0,0))
+        
+    if GameOver and mac.alive == False:
+        win.blit(defeat, (0,0))
 
     ##/DRAW##
 
+    # Predict = Prediction()
+    # Predict.left[0] = macpos[0] - mac.vel
+    # Predict.right[0] = Predict.right[0] + mac.vel
+    # Predict.up[1] = Predict.up[1] - mac.vel
+    # Predict.down[1] = Predict.left[1] + mac.vel
+
     player_action = pygame.key.get_pressed()
-
-    Predict = Prediction()
-    Predict.left[0] = Predict.left[0] - mac.vel
-    Predict.right[0] = Predict.right[0] + mac.vel
-    Predict.up[1] = Predict.up[1] - mac.vel
-    Predict.down[1] = Predict.left[1] + mac.vel
-
-    print(Predict.left)
-
-
-    if player_action [pygame.K_LEFT] :
+    
+    
+    if player_action [pygame.K_LEFT] and GameOver == False:
         macpos[0] = macpos[0] - mac.vel
-    if player_action [pygame.K_RIGHT] :
+        if tuple(macpos) in board.walls:
+            macpos[0] = macpos[0] + mac.vel
+
+    if player_action [pygame.K_RIGHT] and GameOver == False:
         macpos[0] = macpos[0] + mac.vel
-    if player_action [pygame.K_UP] :
+        if tuple(macpos) in board.walls:
+            macpos[0] = macpos[0] - mac.vel
+
+    if player_action [pygame.K_UP] and GameOver == False:
         macpos[1] = macpos[1] - mac.vel
-    if player_action [pygame.K_DOWN] :
+        if tuple(macpos) in board.walls:
+            macpos[1] = macpos[1] + mac.vel
+
+    if player_action [pygame.K_DOWN] and GameOver == False:
         macpos[1] = macpos[1] + mac.vel
+        if tuple(macpos) in board.walls:
+            macpos[1] = macpos[1] - mac.vel
 
     pygame.display.flip()
