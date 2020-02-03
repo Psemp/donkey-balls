@@ -1,6 +1,7 @@
 import pygame
 import math
 import random
+import pathlib
 from pygame.locals import *
 
 class Character:
@@ -13,7 +14,9 @@ class Character:
 mac = Character()
 guard = Character()
 
-maze = open('maze.txt')
+Maze_Path = pathlib.Path(__file__).parent.joinpath('maze.txt')
+
+maze = open(Maze_Path)
 
 mapx = 0
 mapy = 0
@@ -36,7 +39,7 @@ macpos = [mac.x,mac.y]
 mapx = 0
 mapy = 0
 
-maze = open('maze.txt')
+maze = open(Maze_Path)
 
 for r in maze:
     for c in r:
@@ -78,7 +81,7 @@ class Map:
     def get_cell(self, x, y):
         pass
 
-board = Map(open('maze.txt'))
+board = Map(open(Maze_Path))
 
 FloorList = []
 ItemsCoords = []
@@ -96,7 +99,7 @@ Ether = Items ()
 SyringeCreated = False
 GameOver = False
 
-maze = open('maze.txt')
+maze = open(Maze_Path)
 
 mapx = 0
 mapy = 0
@@ -215,7 +218,7 @@ while run == True:
     # Predict.right[0] = Predict.right[0] + mac.vel
     # Predict.up[1] = Predict.up[1] - mac.vel
     # Predict.down[1] = Predict.left[1] + mac.vel
-
+    
     player_action = pygame.key.get_pressed()
     
     
