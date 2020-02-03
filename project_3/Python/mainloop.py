@@ -3,6 +3,7 @@ import math
 import random
 import pathlib
 from pygame.locals import *
+from pathlib import Path
 
 class Character:
     def __init__(self):
@@ -34,7 +35,6 @@ for r in maze:
     mapy += mapinc
 
 macpos = [mac.x,mac.y]
-# print(macpos)
 
 mapx = 0
 mapy = 0
@@ -53,7 +53,6 @@ for r in maze:
     mapy += mapinc
 
 guardpos = [guard.x,guard.y]
-# print(guardpos)
 
 class Map:
 
@@ -89,7 +88,7 @@ ItemsCoords = []
 class Items:
 
     def __init__(self):
-        self.gathered = False ##check this boolean before displaying
+        self.gathered = False
         self.coordinates = []        
 
 Needle = Items()
@@ -122,30 +121,35 @@ Needle.coordinates = ItemsCoords[0]
 Container.coordinates = ItemsCoords[1]
 Ether.coordinates = ItemsCoords [2]
 
-class Prediction:
-    def __init__(self):
-        self.left = macpos
-        self.right = macpos
-        self.up = macpos
-        self.down = macpos
-
 pygame.init
 
 win = pygame.display.set_mode ((480,512))
 
 run = True
-floorimg = str(pathlib.Path(__file__).parent.parent.joinpath("images","floor.png"))
 
-floor = pygame.image.load(floorimg).convert()
-wall = pygame.image.load("wall.png").convert()
-plyr = pygame.image.load("plyr.png").convert_alpha()
-ether = pygame.image.load("ether.png").convert_alpha()
-needle = pygame.image.load("needle.png").convert_alpha()
-cont = pygame.image.load("container.png").convert_alpha()
-guardimg = pygame.image.load("guard.png").convert_alpha()
-syringe = pygame.image.load("syringe.png").convert_alpha()
-victory = pygame.image.load("victory.png").convert_alpha()
-defeat = pygame.image.load("defeat.png").convert_alpha()
+def get_path(file_name):
+    return str(Path(__file__).parent.parent.joinpath("images", file_name))
+
+def get_image(file_name):
+    return pygame.image.load(get_path(file_name)).convert()
+
+def get_image_alpha(file_name):
+    return pygame.image.load(get_path(file_name)).convert_alpha()
+
+
+known_images = ['floor.png', 'wall.png']
+known_alpha_images = ['plyr.png','ether.png','needle.png','container.png','guard.png','syringe.png','victory.png','defeat.png']
+
+images = {}
+
+for known_image in known_images:
+    loaded_image = get_image(known_image)
+    images[known_image] = loaded_image
+
+for known_image in known_alpha_images:
+    loaded_image = get_image_alpha(known_image)
+    images[known_image] = loaded_image
+
 
 while run == True:
     
@@ -178,48 +182,42 @@ while run == True:
     win.fill((255,255,255))
 
     for i in range(0,len(board.floors)):
-        win.blit(floor,(board.floors[i]))
+        win.blit(images["floor.png"],(board.floors[i]))
 
     for i in range(0,len(board.walls)):
-        win.blit(wall,(board.walls[i]))
+        win.blit(images["wall.png"],(board.walls[i]))
 
     if Ether.gathered == False:
-        win.blit(ether, (Ether.coordinates))
+        win.blit(images["ether.png"], (Ether.coordinates))
     else:
-        win.blit(ether, (0,480))
+        win.blit(images["ether.png"], (0,480))
 
     if Needle.gathered == False:
-        win.blit(needle, (Needle.coordinates))  
+        win.blit(images["needle.png"], (Needle.coordinates))  
     else:
-        win.blit(needle, (32,480))
+        win.blit(images["needle.png"], (32,480))
 
     if Container.gathered == False:
-        win.blit(cont, (Container.coordinates))
+        win.blit(images["container.png"], (Container.coordinates))
     else:
-        win.blit(cont, (64,480))
+        win.blit(images["container.png"], (64,480))
     
     if SyringeCreated == True:
-        win.blit(syringe, (416,480))
+        win.blit(images["syringe.png"], (416,480))
 
     if mac.alive == True:
-        win.blit(plyr, (macpos))
+        win.blit(images["plyr.png"], (macpos))
 
     if guard.alive == True:
-        win.blit(guardimg, (guardpos))
+        win.blit(images["guard.png"], (guardpos))
     
     if GameOver and mac.alive:
-        win.blit(victory, (0,0))
+        win.blit(images["victory.png"], (0,0))
         
     if GameOver and mac.alive == False:
-        win.blit(defeat, (0,0))
+        win.blit(images["defeat.png"], (0,0))
 
     ##/DRAW##
-
-    # Predict = Prediction()
-    # Predict.left[0] = macpos[0] - mac.vel
-    # Predict.right[0] = Predict.right[0] + mac.vel
-    # Predict.up[1] = Predict.up[1] - mac.vel
-    # Predict.down[1] = Predict.left[1] + mac.vel
     
     player_action = pygame.key.get_pressed()
     
