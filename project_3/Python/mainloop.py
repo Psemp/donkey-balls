@@ -134,7 +134,9 @@ pygame.init
 win = pygame.display.set_mode ((480,512))
 
 run = True
-floor = pygame.image.load("floor.png").convert()
+floorimg = str(pathlib.Path(__file__).parent.parent.joinpath("images","floor.png"))
+
+floor = pygame.image.load(floorimg).convert()
 wall = pygame.image.load("wall.png").convert()
 plyr = pygame.image.load("plyr.png").convert_alpha()
 ether = pygame.image.load("ether.png").convert_alpha()
