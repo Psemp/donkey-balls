@@ -2,7 +2,6 @@ import pygame
 import math
 import random
 import pathlib
-from pygame.locals import *
 from pathlib import Path
 
 class Character:
@@ -173,7 +172,6 @@ while run == True:
         Needle.gathered = True
     if mac.alive == True and Ether.gathered == False and Tuple_macpos == Ether.coordinates:
         Ether.gathered = True
-        print("test done")
     if mac.alive == True and Container.gathered == False and Tuple_macpos == Container.coordinates:
         Container.gathered = True
 
@@ -219,8 +217,9 @@ while run == True:
 
     ##/DRAW##
     
+    ##MOVEMENT##
+
     player_action = pygame.key.get_pressed()
-    
     
     if player_action [pygame.K_LEFT] and GameOver == False:
         macpos[0] = macpos[0] - mac.vel
@@ -241,5 +240,7 @@ while run == True:
         macpos[1] = macpos[1] + mac.vel
         if tuple(macpos) in board.walls:
             macpos[1] = macpos[1] - mac.vel
+
+    ##/MOVEMENT##
 
     pygame.display.flip()
