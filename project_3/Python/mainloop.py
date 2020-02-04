@@ -160,19 +160,19 @@ while run == True:
 
     Tuple_macpos = tuple(macpos)
 
-    if mac.alive == True and guard.alive == True and macpos == guardpos and SyringeCreated == False:
+    if mac.alive and guard.alive and macpos == guardpos and not SyringeCreated:
         mac.alive = False
         GameOver = True 
-    if mac.alive == True and guard.alive == True and macpos == guardpos and SyringeCreated == True:
+    if mac.alive and guard.alive and macpos == guardpos and SyringeCreated:
         guard.alive = False
         GameOver = True
-    if  mac.alive == True and Needle.gathered == True and Ether.gathered == True and Container.gathered == True:
+    if  mac.alive and Needle.gathered and Ether.gathered and Container.gathered:
         SyringeCreated = True
-    if mac.alive == True and Needle.gathered == False and Tuple_macpos == Needle.coordinates:
+    if mac.alive and not Needle.gathered and Tuple_macpos == Needle.coordinates:
         Needle.gathered = True
-    if mac.alive == True and Ether.gathered == False and Tuple_macpos == Ether.coordinates:
+    if mac.alive and not Ether.gathered and Tuple_macpos == Ether.coordinates:
         Ether.gathered = True
-    if mac.alive == True and Container.gathered == False and Tuple_macpos == Container.coordinates:
+    if mac.alive and not Container.gathered and Tuple_macpos == Container.coordinates:
         Container.gathered = True
 
     ##DRAW##
@@ -185,34 +185,34 @@ while run == True:
     for i in range(0,len(board.walls)):
         win.blit(images["wall.png"],(board.walls[i]))
 
-    if Ether.gathered == False:
+    if not Ether.gathered:
         win.blit(images["ether.png"], (Ether.coordinates))
     else:
         win.blit(images["ether.png"], (0,480))
 
-    if Needle.gathered == False:
+    if not Needle.gathered:
         win.blit(images["needle.png"], (Needle.coordinates))  
     else:
         win.blit(images["needle.png"], (32,480))
 
-    if Container.gathered == False:
+    if not Container.gathered:
         win.blit(images["container.png"], (Container.coordinates))
     else:
         win.blit(images["container.png"], (64,480))
     
-    if SyringeCreated == True:
+    if SyringeCreated:
         win.blit(images["syringe.png"], (416,480))
 
-    if mac.alive == True:
+    if mac.alive:
         win.blit(images["plyr.png"], (macpos))
 
-    if guard.alive == True:
+    if guard.alive:
         win.blit(images["guard.png"], (guardpos))
     
     if GameOver and mac.alive:
         win.blit(images["victory.png"], (0,0))
         
-    if GameOver and mac.alive == False:
+    if GameOver and not mac.alive:
         win.blit(images["defeat.png"], (0,0))
 
     ##/DRAW##
@@ -221,22 +221,22 @@ while run == True:
 
     player_action = pygame.key.get_pressed()
     
-    if player_action [pygame.K_LEFT] and GameOver == False:
+    if player_action [pygame.K_LEFT] and not GameOver:
         macpos[0] = macpos[0] - mac.vel
         if tuple(macpos) in board.walls:
             macpos[0] = macpos[0] + mac.vel
 
-    if player_action [pygame.K_RIGHT] and GameOver == False:
+    if player_action [pygame.K_RIGHT] and not GameOver:
         macpos[0] = macpos[0] + mac.vel
         if tuple(macpos) in board.walls:
             macpos[0] = macpos[0] - mac.vel
 
-    if player_action [pygame.K_UP] and GameOver == False:
+    if player_action [pygame.K_UP] and not GameOver:
         macpos[1] = macpos[1] - mac.vel
         if tuple(macpos) in board.walls:
             macpos[1] = macpos[1] + mac.vel
 
-    if player_action [pygame.K_DOWN] and GameOver == False:
+    if player_action [pygame.K_DOWN] and not GameOver:
         macpos[1] = macpos[1] + mac.vel
         if tuple(macpos) in board.walls:
             macpos[1] = macpos[1] - mac.vel
