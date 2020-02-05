@@ -3,55 +3,8 @@ import math
 import random
 import pathlib
 from pathlib import Path
-
-class Character:
-    def __init__(self):
-        self.x = 0  
-        self.y = 0
-        self.vel = 32
-        self.alive = True
-
-mac = Character()
-guard = Character()
-
-Maze_Path = pathlib.Path(__file__).parent.joinpath('maze.txt')
-
-maze = open(Maze_Path)
-
-mapx = 0
-mapy = 0
-mapinc = 32
-
-for r in maze:
-    for c in r:
-        if c == 'J':
-            mac.x = mapx
-            mac.y = mapy
-        if mapx == 480:
-            mapx = 0
-        else:
-            mapx += mapinc
-    mapy += mapinc
-
-macpos = [mac.x,mac.y]
-
-mapx = 0
-mapy = 0
-
-maze = open(Maze_Path)
-
-for r in maze:
-    for c in r:
-        if c == 'G':
-            guard.x = mapx
-            guard.y = mapy
-        if mapx == 480:
-            mapx = 0
-        else:
-            mapx += mapinc
-    mapy += mapinc
-
-guardpos = [guard.x,guard.y]
+from get_char_pos import get_char_position
+from get_items import get_items_coords
 
 class Map:
 
@@ -76,13 +29,25 @@ class Map:
                     map_x += map_inc
             map_y += map_inc
 
-    def get_cell(self, x, y):
-        pass
-
+Maze_Path = pathlib.Path(__file__).parent.joinpath('maze.txt')
 board = Map(open(Maze_Path))
 
-FloorList = []
-ItemsCoords = []
+class Character:
+
+    def __init__(self):
+        self.x = 0  
+        self.y = 0
+        self.vel = 32
+        self.alive = True
+        self.tag = "str"
+
+mac = Character()
+mac.tag = "mac"
+guard = Character()
+guard.tag = "guard"
+
+macpos = get_char_position(mac)
+guardpos = get_char_position(guard)
 
 class Items:
 
@@ -97,32 +62,11 @@ Ether = Items ()
 SyringeCreated = False
 GameOver = False
 
-maze = open(Maze_Path)
-
-mapx = 0
-mapy = 0
-mapinc = 32
-
-for r in maze:
-    for c in r:
-        if c == '.':
-            FloorList.append((mapx,mapy))
-        else:
-            pass
-        if mapx == 480:
-            mapx = 0
-        else:
-            mapx += mapinc 
-    mapy += mapinc
-
-ItemsCoords = random.sample(FloorList,3)
-Needle.coordinates = ItemsCoords[0]
-Container.coordinates = ItemsCoords[1]
-Ether.coordinates = ItemsCoords [2]
+get_items_coords(Needle,Container,Ether)
 
 pygame.init
 
-win = pygame.display.set_mode ((480,512))
+win = pygame.display.set_mode((480,512))
 
 run = True
 
