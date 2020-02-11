@@ -1,6 +1,4 @@
 import pathlib
-from pathlib import Path
-
 
 
 def get_char_position(char):
@@ -12,7 +10,7 @@ def get_char_position(char):
     mapx = 0
     mapy = 0
     mapinc = 32
-    
+
     for r in maze:
         for c in r:
             if c == 'J' and char.tag == "mac":
@@ -26,5 +24,5 @@ def get_char_position(char):
             else:
                 mapx += mapinc
         mapy += mapinc
-    charpos = [char.x,char.y]
+    charpos = [char.x, char.y]
     return charpos
