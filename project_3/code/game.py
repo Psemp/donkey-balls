@@ -7,7 +7,8 @@ from items import needle, ether, container
 
 def main():
 
-    syringe_created = False
+    # syr_crea = syringe created / gath = gathered
+    syr_crea = False
     game_over = False
 
     pygame.init
@@ -26,7 +27,16 @@ def main():
         return pygame.image.load(get_path(file_name)).convert_alpha()
 
     known_images = ['floor.png', 'wall.png']
-    known_alpha_images = ['plyr.png', 'ether.png', 'needle.png', 'container.png', 'guard.png', 'syringe.png', 'victory.png', 'defeat.png']
+    known_alpha_images = [
+        'plyr.png',
+        'ether.png',
+        'needle.png',
+        'container.png',
+        'guard.png',
+        'syringe.png',
+        'victory.png',
+        'defeat.png'
+        ]
 
     images = {}
 
@@ -48,20 +58,20 @@ def main():
 
         Tuple_macpos = tuple(macpos)
 
-        if mac.alive and guard.alive and macpos == guardpos and not syringe_created:
+        if mac.alive and guard.alive and macpos == guardpos and not syr_crea:
             mac.alive = False
             game_over = True
-        if mac.alive and guard.alive and macpos == guardpos and syringe_created:
+        if mac.alive and guard.alive and macpos == guardpos and syr_crea:
             guard.alive = False
             game_over = True
-        if mac.alive and needle.gathered and ether.gathered and container.gathered:
-            syringe_created = True
-        if mac.alive and not needle.gathered and Tuple_macpos == needle.coordinates:
-            needle.gathered = True
-        if mac.alive and not ether.gathered and Tuple_macpos == ether.coordinates:
-            ether.gathered = True
-        if mac.alive and not container.gathered and Tuple_macpos == container.coordinates:
-            container.gathered = True
+        if mac.alive and needle.gath and ether.gath and container.gath:
+            syr_crea = True
+        if mac.alive and not needle.gath and Tuple_macpos == needle.pos:
+            needle.gath = True
+        if mac.alive and not ether.gath and Tuple_macpos == ether.pos:
+            ether.gath = True
+        if mac.alive and not container.gath and Tuple_macpos == container.pos:
+            container.gath = True
 
     # DRAW
 
@@ -73,22 +83,22 @@ def main():
         for i in range(0, len(board.walls)):
             win.blit(images["wall.png"], (board.walls[i]))
 
-        if not ether.gathered:
-            win.blit(images["ether.png"], (ether.coordinates))
+        if not ether.gath:
+            win.blit(images["ether.png"], (ether.pos))
         else:
             win.blit(images["ether.png"], (0, 480))
 
-        if not needle.gathered:
-            win.blit(images["needle.png"], (needle.coordinates))
+        if not needle.gath:
+            win.blit(images["needle.png"], (needle.pos))
         else:
             win.blit(images["needle.png"], (32, 480))
 
-        if not container.gathered:
-            win.blit(images["container.png"], (container.coordinates))
+        if not container.gath:
+            win.blit(images["container.png"], (container.pos))
         else:
             win.blit(images["container.png"], (64, 480))
 
-        if syringe_created:
+        if syr_crea:
             win.blit(images["syringe.png"], (416, 480))
 
         if mac.alive:

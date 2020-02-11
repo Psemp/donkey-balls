@@ -1,15 +1,14 @@
 import random
 import pathlib
-from pathlib import Path
 
 
-def get_items_coords(Needle,Container,Ether):
+def get_items_coords(needle, container, ether):
 
     Maze_Path = pathlib.Path(__file__).parent.joinpath('maze.txt')
     maze = open(Maze_Path)
 
-    FloorList = []
-    ItemsCoords = []
+    floor_list = []
+    items_coords = []
     mapx = 0
     mapy = 0
     mapinc = 32
@@ -17,16 +16,16 @@ def get_items_coords(Needle,Container,Ether):
     for r in maze:
         for c in r:
             if c == '.':
-                FloorList.append((mapx,mapy))
+                floor_list.append((mapx, mapy))
             else:
                 pass
             if mapx == 480:
                 mapx = 0
             else:
-                mapx += mapinc 
+                mapx += mapinc
         mapy += mapinc
 
-    ItemsCoords = random.sample(FloorList,3)
-    Needle.coordinates = ItemsCoords[0]
-    Container.coordinates = ItemsCoords[1]
-    Ether.coordinates = ItemsCoords [2]
+    items_coords = random.sample(floor_list, 3)
+    needle.pos = items_coords[0]
+    container.pos = items_coords[1]
+    ether.pos = items_coords[2]
